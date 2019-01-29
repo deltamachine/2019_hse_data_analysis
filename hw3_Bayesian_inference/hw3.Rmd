@@ -1,0 +1,33 @@
+```{r}
+library(tidyverse)
+
+phoible_df = read.csv('hw3_phoible.csv')
+task2_df = read.csv('hw3_task_2.csv')
+task3_df = read.csv('hw3_task_3.csv')
+```
+### 3.1
+```{r}
+result = prod(dnorm(phoible_df$consonants, mean = 22, sd = 6))
+print(result)
+```
+### 3.2
+```{r}
+langs <- colnames(task3_df)[1:13]
+prior <- 1 / length(langs)
+
+var1 <- as.numeric(filter(task2_df, letter == 'm')[1:13]) 
+var2 <- as.numeric(filter(task2_df, letter == 'o')[1:13])
+var3 <- as.numeric(filter(task2_df, letter == 's')[1:13])
+var4 <- as.numeric(filter(task2_df, letter == 't')[1:13])
+
+likelihood <- var1 * var2 * var3 * var4
+product <- prior * likelihood
+posterior <- product / sum(product)
+
+print(max(posterior))
+```
+### 3.3
+```{r}
+result <- (task3_df$a[1] + 33) / (task3_df$a[1] + 33 + task3_df$b[1] + 77)
+print(result)
+```
