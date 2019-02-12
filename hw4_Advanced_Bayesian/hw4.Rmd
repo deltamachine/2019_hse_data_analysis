@@ -1,0 +1,28 @@
+### 4.1
+```{r}
+df <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/students/deltamachine/hw4_Advanced_Bayesian/hw4_caretta.csv')
+
+mean <- mean(df$vowel.dur, trim = 0.1)
+sd <- sd(df$vowel.dur)
+
+mean_brs02 <- mean(df[df$speaker == c('brs02'), ]$vowel.dur)
+sd_brs02 <- sd(df[df$speaker == c('brs02'), ]$vowel.dur)
+
+mean_post_brs02 <- weighted.mean(c(mean, mean_brs02), c(1 / sd, 1 / sd_brs02))
+sd_post_brs02 <- (1 / sd + 1 / sd_brs02) ^ (-1)
+
+print(data.frame(speaker = 'brs02', mean_post = mean_post_brs02, sd_post = sd_post_brs02))
+```
+### 4.2
+```{r}
+mean_tt01 <- mean(df[df$speaker == c('tt01'), ]$vowel.dur)
+sd_tt01 <- sd(df[df$speaker == c('tt01'), ]$vowel.dur)
+
+mean_post_tt01 <- weighted.mean(c(mean, mean_tt01), c(1 / sd, 1 / sd_tt01))
+sd_post_tt01 <- (1 / sd + 1 / sd_tt01) ^ (-1)
+
+cred_int_l <- qnorm(.025, mean_post_tt01, sd_post_tt01)
+cred_int_h <- qnorm(.975, mean_post_tt01, sd_post_tt01)
+
+print(data.frame(speaker = 'tt01', low_bound = cred_int_l, high_bound = cred_int_h))
+```
